@@ -2,15 +2,17 @@ version: '3'
 
 services:
   jira:
+    build:
+      context: .
+      dockerfile: ./jira/Dockerfile
     depends_on:
       - mysql
     container_name: jira
     restart: always
-    image: cptactionhank/atlassian-jira:latest
     ports:
       - '8080:8080'
     volumes:
-      - /var/atlassian/jira:/var/atlassian/jira  # JIRA_HOME
+      - ./data/jira:/var/atlassian/jira  # JIRA_HOME
 
   mysql:
     container_name: mysql  # https://store.docker.com/images/mysql
@@ -26,7 +28,7 @@ services:
     ports:
       - '3306:3306'
     volumes:
-      - /var/lib/mysql:/var/lib/mysql
+      - ./data/mysql:/var/lib/mysql
 
 volumes:
   jira-data:
