@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  jira:
+    depends_on:
+      - mysql
+    container_name: jira
+    restart: always
+    image: cptactionhank/atlassian-jira:latest
+    ports:
+      - '8080:8080'
+    volumes:
+      - jira-data:/var/atlassian/jira  # JIRA_HOME
+
+  mysql:
+    container_name: mysql  # https://store.docker.com/images/mysql
+    restart: always
+    image: mysql:5.7
+    environment:
+      # Use a .env file to store credentials securely?
+      # https://docs.docker.com/compose/environment-variables/
+      - MYSQL_ROOT_PASSWORD=Fishapp2014!
+      - MYSQL_DATABASE=jiradb          # this database will be created on image startup
+      - MYSQL_USER=jira                # this user will be granted superuser permissions on MYSQL_DATABASE
+      - MYSQL_PASSWORD=Fishapp2014!
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  jira-data:
+  mysql-data:
