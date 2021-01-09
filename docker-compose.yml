@@ -21,12 +21,22 @@ services:
     environment:
       # Use a .env file to store credentials securely?
       # https://docs.docker.com/compose/environment-variables/
-      - MYSQL_ROOT_PASSWORD=Fishapp2014!
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_DATABASE=jiradb          # this database will be created on image startup
       - MYSQL_USER=jira                # this user will be granted superuser permissions on MYSQL_DATABASE
-      - MYSQL_PASSWORD=Fishapp2014!
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - DEFAULT_STORAGE_ENGINE=INNODB
+      - CHARACTER_SET_SERVER=utf8mb4
     ports:
       - '3306:3306'
+    command:
+      - --default-storage-engine=INNODB
+      - --character-set-server=utf8mb4
+      - --innodb_default_row_format=DYNAMIC
+      - --innodb_large_prefix=on
+      - --innodb_file_format=Barracuda
+      - --innodb_log_file_size=2GB
+      - --sql_mode=NO_AUTO_VALUE_ON_ZERO
     volumes:
       - ./data/mysql:/var/lib/mysql
 
